@@ -2,13 +2,17 @@
 
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
  */
 class Image
 {
+    const FOLDER_PATH = '/public/uploads/images';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -36,12 +40,36 @@ class Image
      */
     private $isActive;
 
-    public function __construct($fileName, $userId, $loadDate, $isActive = 1)
-    {
+    /**
+     * Unmapped property to handle file uploads.
+     */
+    private $file;
 
+//    public function __construct($fileName, $userId, $loadDate, $isActive = 1)
+//    {
+//        $this->fileName = $fileName;
+//        $this->userId = $userId;
+//        $this->loadDate = $loadDate;
+//        $this->isActive = $isActive;
+//    }
+
+    /**
+     * @param UploadedFile $file
+     */
+    public function setFile(?UploadedFile $file)
+    {
+        $this->file = $file;
     }
 
-    public function getId(): ?int
+    /**
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+       public function getId(): ?int
     {
         return $this->id;
     }
@@ -70,12 +98,12 @@ class Image
         return $this;
     }
 
-    public function getLoadDate(): ?\DateTimeInterface
+    public function getLoadDate(): ?DateTimeInterface
     {
         return $this->loadDate;
     }
 
-    public function setLoadDate(\DateTimeInterface $loadDate): self
+    public function setLoadDate(DateTimeInterface $loadDate): self
     {
         $this->loadDate = $loadDate;
 
