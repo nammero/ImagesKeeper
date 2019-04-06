@@ -1,18 +1,29 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Image Keeper</h1>
-    <a class="btn btn-success" href="{{ path('new_image') }}"><i class="fa fa-plus"></i> Add a new image</a>
-    {% for entity in entities if entity.isActive == 1 %}
-        <div>
-            <img src="{{ asset('/uploads/images/'~entity.fileName) }}" class="img-rounded"/>
-            <time>{{ entity.loadDate|date('Y-m-d H:i') }}</time>
+    <div class="">
+        <div class="col-md-12">
+            <h1>Image Keeper</h1>
+            <a class="btn btn-success" href="{{ path('new_image') }}"><i class="fa fa-plus"></i> Add a new image</a>
+            <div class="row">
+                {% for entity in entities if entity.isActive == 1 %}
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <a href="" class="d-block mb-4 h-100">
+                            <img class="img-fluid img-thumbnail" src="{{ asset('/uploads/images/'~entity.fileName) }}"/>
+                        </a>
+                        <div>
+                            <small>{{ entity.loadDate|date('Y-m-d H:i') }}</small>
+                        </div>
+                        <a href="{{ path('image_edit', { 'id': entity.id }) }}"
+                           class="btn btn-sm btn-info full-width"><i
+                                    class="fa fa-edit"></i> Edit</a>
+                        <a href="{{ path('image_delete', { 'id': entity.id }) }}"
+                           class="btn btn-sm btn-xs btn-danger full-width verifiable"><i
+                                    class="fa fa-trash"></i> Delete</a>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
-        <a href="{{ path('image_edit', { 'id': entity.id }) }}" class="btn btn-xs btn-info full-width"><i
-                    class="fa fa-edit"></i> Edit</a>
-
-        <a href="{{ path('image_delete', { 'id': entity.id }) }}" class="btn btn-xs btn-danger full-width verifiable"><i
-                    class="fa fa-trash"></i> Delete</a>
-    {% endfor %}
+    </div>
 {% endblock %}
 

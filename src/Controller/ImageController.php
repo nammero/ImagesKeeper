@@ -160,7 +160,7 @@ class ImageController extends AbstractController
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $file = $entity->getFile();
 
-            if ($file){
+            if ($file) {
                 try {
                     $file->move(
                         $this->getParameter('images_directory'),
