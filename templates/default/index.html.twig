@@ -1,7 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h1>Blablabalbal</h1>
+    <h1>Blablabalbal</h1>
     <a href="{{ path('new_image') }}">Add a new image</a>
+    {% for entity in entities if entity.isActive == 1 %}
+        <div>
+            <img src="{{ asset('/uploads/images/'~entity.fileName) }}" class="img-rounded"/>
+            <time>{{ entity.loadDate|date('Y-m-d H:i') }}</time>
+        </div>
+        <a href="{{ path('image_edit', { 'id': entity.id }) }}" class="btn btn-xs btn-info full-width"><i
+                    class="fa fa-edit"></i> Edit</a>
+
+        <a href="{{ path('image_delete', { 'id': entity.id }) }}" class="btn btn-xs btn-danger full-width verifiable"><i
+                    class="fa fa-trash"></i> Delete</a>
+    {% endfor %}
 {% endblock %}
 

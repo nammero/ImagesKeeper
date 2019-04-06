@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Edit the image</h1>
+    <div>
+        <img src="{{ asset('/uploads/images/'~entity.fileName) }}" class="img-rounded"/>
+        <time>{{ entity.loadDate|date('Y-m-d H:i') }}</time>
+    </div>
+    {{ form_start(edit_form) }}
+    <div class="form-group col-md-12">
+        {{ form_label(edit_form.file) }}
+        {{ form_widget(edit_form.file) }}
+    </div>
+    <div class="form-group">
+        <div class="col-md-12">
+            {{ form_widget(edit_form.submit, {attr: {class: "btn btn-primary"}}) }}
+        </div>
+    </div>
+    {{ form_end(edit_form) }}
+{% endblock %}
+

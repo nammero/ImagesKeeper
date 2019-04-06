@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\Image;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -38,7 +37,15 @@ class ImageType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Image::class,
+            'data_class' => 'App\Entity\Image',
         ]);
     }
+
+//    /**
+//     * @return string
+//     */
+//    public function getName()
+//    {
+//        return 'app_image';
+//    }
 }
