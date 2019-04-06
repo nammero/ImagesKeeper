@@ -4,9 +4,9 @@ namespace App\Controller;
 
 use App\Form\ImageType;
 use App\Entity\Image;
+use App\Service\ImageHandlerService;
 use DateTime;
 use Exception;
-//use Imagine\Imagick\Image;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -49,6 +49,8 @@ class ImageController extends AbstractController
                     $this->getParameter('images_directory'),
                     $fileName
                 );
+                ImageHandlerService::ImageResize($this->getParameter('images_directory').'/'.$fileName,
+                    $this->getParameter('small_images_directory').'/'.$fileName);
             } catch (FileException $e) {
             }
 
@@ -169,6 +171,8 @@ class ImageController extends AbstractController
                 } catch (FileException $e) {
                 }
             }
+            ImageHandlerService::ImageResize($this->getParameter('images_directory').'/'.$fileName,
+                $this->getParameter('small_images_directory').'/'.$fileName);
 
             $date = new DateTime('now');
 
@@ -201,9 +205,11 @@ class ImageController extends AbstractController
     public function deleteAction(Image $image)
     {
         $em = $this->getDoctrine()->getManager();
+        $fileName = $image->getFileName();
 
         try {
-            unlink($this->getParameter('images_directory').'/'.$image->getFileName());
+            unlink($this->getParameter('images_directory').'/'.$fileName);
+            unlink($this->getParameter('small_images_directory').'/'.$fileName);
         } catch (FileException $e) {
         }
 
@@ -216,11 +222,11 @@ class ImageController extends AbstractController
     /**
      * Creates a form to delete an Image entity by id.
      *
-     * @param mixed $id The entity id
+     * @param int $id The entity id
      *
      * @return FormInterface
      */
-    private function createDeleteForm($id)
+    private function createDeleteForm(int $id)
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('image_delete', ['id' => $id]))

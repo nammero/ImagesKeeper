@@ -4,12 +4,13 @@
     <div class="">
         <div class="col-md-12">
             <h1>Image Keeper</h1>
+            <hr class="mt-1 mb-3">
             <a class="btn btn-success" href="{{ path('new_image') }}"><i class="fa fa-plus"></i> Add a new image</a>
             <div class="row">
                 {% for entity in entities if entity.isActive == 1 %}
                     <div class="col-lg-3 col-md-4 col-6">
-                        <a href="" class="d-block mb-4 h-100">
-                            <img class="img-fluid img-thumbnail" src="{{ asset('/uploads/images/'~entity.fileName) }}"/>
+                        <a href="" class="d-block mb-4">
+                            <img class="img-fluid img-thumbnail" src="{{ asset('/uploads/small_images/'~entity.fileName) }}"/>
                         </a>
                         <div>
                             <small>{{ entity.loadDate|date('Y-m-d H:i') }}</small>
