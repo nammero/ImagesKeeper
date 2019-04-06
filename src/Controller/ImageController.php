@@ -18,17 +18,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class ImageController
- * @package App\Controller
+ * Class ImageController.
  */
 class ImageController extends AbstractController
 {
-
     /**
      * @Route("/new_image", name="new_image")
      * @Method("GET")
+     *
      * @param Request $request
+     *
      * @return RedirectResponse|Response
+     *
      * @throws Exception
      */
     public function new(Request $request)
@@ -40,7 +41,7 @@ class ImageController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $image->getFile();
 
-            $fileName = $this->generateUniqueFileName() . '.' . $file->guessExtension();
+            $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
             $image->setFileName($fileName);
 
             try {
@@ -55,7 +56,6 @@ class ImageController extends AbstractController
 
             $image->setUserId(1);
             $image->setLoadDate($date);
-            $image->setIsActive(1);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($image);
@@ -70,7 +70,6 @@ class ImageController extends AbstractController
         ]);
     }
 
-
     /**
      * @return string
      */
@@ -81,13 +80,14 @@ class ImageController extends AbstractController
         return md5(uniqid());
     }
 
-
     /**
      * Displays a form to edit an existing Image entity.
      *
      * @Route("/{id}/edit", name="image_edit")
      * @Method("GET")
+     *
      * @param $id
+     *
      * @return Response
      */
     public function editAction($id)
@@ -105,26 +105,28 @@ class ImageController extends AbstractController
         return $this->render('image/edit.html.twig', [
             'entity' => $entity,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView()
+            'delete_form' => $deleteForm->createView(),
         ]);
     }
 
     /**
      * Creates a form to edit an Image entity.
+     *
      * @param Image $entity The entity
+     *
      * @return FormInterface
      */
     private function createEditForm(Image $entity)
     {
         $form = $this->createForm(ImageType::class, $entity, [
             'action' => $this->generateUrl('image_update', ['id' => $entity->getId()]),
-            'method' => 'PUT'
+            'method' => 'PUT',
         ]);
 
         $form->add('submit',
             SubmitType::class,
             ['label' => 'Save',
-                'attr' => ['class' => 'btn btn-primary']]);
+                'attr' => ['class' => 'btn btn-primary'], ]);
 
         return $form;
     }
@@ -134,9 +136,12 @@ class ImageController extends AbstractController
      *
      * @Route("/{id}", name="image_update")
      * @Method("PUT")
+     *
      * @param Request $request
      * @param $id
+     *
      * @return RedirectResponse|Response
+     *
      * @throws Exception
      */
     public function updateAction(Request $request, $id)
@@ -153,25 +158,24 @@ class ImageController extends AbstractController
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-
             $file = $entity->getFile();
 
-            try {
-                $file->move(
-                    $this->getParameter('images_directory'),
-                    $fileName
-                );
-            } catch (FileException $e) {
+            if ($file){
+                try {
+                    $file->move(
+                        $this->getParameter('images_directory'),
+                        $fileName
+                    );
+                } catch (FileException $e) {
+                }
             }
 
             $date = new DateTime('now');
 
             $entity->setUserId(1);
             $entity->setLoadDate($date);
-            $entity->setIsActive(1);
 
             $em->persist($entity);
-
 
             $em->flush();
 
@@ -181,21 +185,28 @@ class ImageController extends AbstractController
         return $this->render('image/edit.html.twig', [
             'entity' => $entity,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView()
+            'delete_form' => $deleteForm->createView(),
         ]);
     }
-
 
     /**
      * Deletes an Image entity.
      *
      * @Route("/{id}/delete", name="image_delete")
+     *
      * @param Image $image
+     *
      * @return RedirectResponse
      */
     public function deleteAction(Image $image)
     {
         $em = $this->getDoctrine()->getManager();
+
+        try {
+            unlink($this->getParameter('images_directory').'/'.$image->getFileName());
+        } catch (FileException $e) {
+        }
+
         $em->remove($image);
         $em->flush();
 
@@ -206,6 +217,7 @@ class ImageController extends AbstractController
      * Creates a form to delete an Image entity by id.
      *
      * @param mixed $id The entity id
+     *
      * @return FormInterface
      */
     private function createDeleteForm($id)
@@ -215,7 +227,7 @@ class ImageController extends AbstractController
             ->setMethod('DELETE')
             ->add('submit', SubmitType::class, [
                 'label' => 'Delete',
-                'attr' => ['class' => 'btn btn-danger pull-right']
+                'attr' => ['class' => 'btn btn-danger pull-right'],
             ])
             ->getForm();
     }

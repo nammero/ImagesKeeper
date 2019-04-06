@@ -20,9 +20,7 @@ class DefaultController extends AbstractController
         $entities = $em->getRepository('App\Entity\Image')->findAll();
 
         return $this->render('default/index.html.twig', [
-            'entities' => $entities
+            'entities' => $entities,
         ]);
     }
-
-
 }

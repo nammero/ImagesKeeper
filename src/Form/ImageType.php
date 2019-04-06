@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -12,7 +14,7 @@ class ImageType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array                $options
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -22,10 +24,25 @@ class ImageType extends AbstractType
             'label_attr' => [
                 'class' => 'control-label',
             ],
+
             'attr' => [
                 'class' => 'form-control',
+                'accept' => 'image/jpeg,image/png',
             ],
         ])->add(
+            'isActive', CheckboxType::class, [
+                'label' => 'Active',
+                'data' => true,
+                'required' => false,
+//                'choices' => [
+//                    'Yes' => true,
+//                    'No' => false,
+//                ],
+                'label_attr' => [
+                    'class' => 'control-label',
+                ],
+            ]
+        )->add(
             'submit',
             SubmitType::class,
             [
@@ -40,12 +57,4 @@ class ImageType extends AbstractType
             'data_class' => 'App\Entity\Image',
         ]);
     }
-
-//    /**
-//     * @return string
-//     */
-//    public function getName()
-//    {
-//        return 'app_image';
-//    }
 }

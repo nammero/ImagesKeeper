@@ -11,6 +11,10 @@
         {{ form_label(edit_form.file) }}
         {{ form_widget(edit_form.file) }}
     </div>
+    <div class="form-group col-md-12">
+        {{ form_label(edit_form.isActive) }}
+        {{ form_widget(edit_form.isActive) }}
+    </div>
     <div class="form-group">
         <div class="col-md-12">
             {{ form_widget(edit_form.submit, {attr: {class: "btn btn-primary"}}) }}

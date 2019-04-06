@@ -69,7 +69,7 @@ class Image
         return $this->file;
     }
 
-       public function getId(): ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
