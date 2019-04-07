@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Edit the image</h1>
-    <div>
+    <div class="col-md-12">
+        <h1>Edit the image</h1>
         <img src="{{ asset('/uploads/images/'~entity.fileName) }}" class="img-rounded"/>
-        <time>{{ entity.loadDate|date('Y-m-d H:i') }}</time>
+        <div><small>{{ entity.loadDate|date('Y-m-d H:i') }}</small></div>
     </div>
     {{ form_start(edit_form) }}
     <div class="form-group col-md-12">

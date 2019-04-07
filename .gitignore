@@ -24,4 +24,7 @@
 .php_cs.dist
 ###< friendsofphp/php-cs-fixer ###
 
+public/uploads/images
+public/uploads/small_images
+
 
