@@ -29,7 +29,7 @@ class DefaultController extends AbstractController
         $pagination = $paginator->paginate(
             $queryBuilder,
             $request->query->getInt('page', 1), /*page number*/
-            10 /*limit per page*/
+            8 /*limit per page*/
         );
 
         return $this->render('default/index.html.twig', [
