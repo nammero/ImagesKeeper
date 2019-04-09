@@ -7,10 +7,10 @@ use Imagine\Image\Box;
 
 class ImageHandlerService
 {
-    public static $width = 275;
-    public static $height = 183;
+    const WIDTH = 275;
+    const HEIGHT = 183;
 
-    public static function ImageResize($from, $to)
+    public static function ImageResize($fileName, $ImageDir, $smallImageDir)
     {
         $imagine = new Imagine();
         $options = [
@@ -18,6 +18,9 @@ class ImageHandlerService
             'png_compression_level' => 9,
         ];
 
-        $imagine->open($from)->resize(new Box(self::$width, self::$height))->save($to, $options);
+        $imagine->open($ImageDir.'/'.$fileName)
+            ->resize(new Box(ImageHandlerService::WIDTH, ImageHandlerService::HEIGHT))
+            ->save($smallImageDir.'/'.$fileName,
+                $options);
     }
 }

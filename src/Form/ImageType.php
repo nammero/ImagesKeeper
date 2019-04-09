@@ -23,7 +23,6 @@ class ImageType extends AbstractType
             'label_attr' => [
                 'class' => 'control-label',
             ],
-
             'attr' => [
                 'class' => 'form-control',
                 'accept' => 'image/jpeg,image/png',
@@ -33,15 +32,10 @@ class ImageType extends AbstractType
                 'label' => 'Active',
                 'data' => true,
                 'required' => false,
-//                'choices' => [
-//                    'Yes' => true,
-//                    'No' => false,
-//                ],
                 'label_attr' => [
                     'class' => 'control-label',
                 ],
-            ]
-        )->add(
+            ])->add(
             'submit',
             SubmitType::class,
             [

@@ -11,8 +11,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class Image
 {
-    const FOLDER_PATH = '/public/uploads/images';
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -44,14 +42,6 @@ class Image
      * Unmapped property to handle file uploads.
      */
     private $file;
-
-//    public function __construct($fileName, $userId, $loadDate, $isActive = 1)
-//    {
-//        $this->fileName = $fileName;
-//        $this->userId = $userId;
-//        $this->loadDate = $loadDate;
-//        $this->isActive = $isActive;
-//    }
 
     /**
      * @param UploadedFile $file
