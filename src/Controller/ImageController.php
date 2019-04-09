@@ -4,7 +4,10 @@ namespace App\Controller;
 
 use App\Form\ImageType;
 use App\Entity\Image;
+use App\Repository\UserRepository;
 use App\Service\ImageService;
+use Doctrine\ORM\NonUniqueResultException;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -24,19 +27,26 @@ class ImageController extends AbstractController
      * @Route("/new_image", name="new_image")
      * @Method("GET")
      *
-     * @param Request      $request
-     * @param ImageService $imageService
+     * @param UserRepository $repository
+     * @param Request        $request
+     * @param ImageService   $imageService
      *
      * @return RedirectResponse|Response
+     *
+     * @throws NonUniqueResultException
      */
-    public function new(Request $request, ImageService $imageService)
+    public function new(UserRepository $repository, Request $request, ImageService $imageService)
     {
         $image = new Image();
+        $user = $this->getUser();
+        if (!$user) {
+            $user = $repository->findUserById(1);
+        }
         $form = $this->createForm(ImageType::class, $image);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $imageService->SaveOrUpdateImage($image);
+            $imageService->SaveOrUpdateImage($image, $user);
 
             return $this->redirect($this->generateUrl('home'));
         }
@@ -103,16 +113,23 @@ class ImageController extends AbstractController
      * @Route("/{id}", name="image_update")
      * @Method("PUT")
      *
-     * @param Request $request
+     * @param UserRepository $repository
+     * @param Request        $request
      * @param $id
      * @param ImageService $imageService
      *
      * @return RedirectResponse|Response
+     *
+     * @throws Exception
      */
-    public function updateAction(Request $request, $id, ImageService $imageService)
+    public function updateAction(UserRepository $repository, Request $request, $id, ImageService $imageService)
     {
         $em = $this->getDoctrine()->getManager();
         $image = $em->getRepository('App\Entity\Image')->find($id);
+        $user = $this->getUser();
+        if (!$user) {
+            $user = $repository->findUserById(1);
+        }
 
         if (!$image) {
             throw $this->createNotFoundException('Unable to find Image entity.');
@@ -122,7 +139,7 @@ class ImageController extends AbstractController
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $imageService->SaveOrUpdateImage($image);
+            $imageService->SaveOrUpdateImage($image, $user);
 
             return $this->redirect($this->generateUrl('home'));
         }

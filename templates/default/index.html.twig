@@ -1,10 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <div class="col-md-12">
+        <h1>Image Keeper ({{ pagination.getTotalItemCount }})
+            <a class="btn btn-dark float-right mt-2" href="{{ path('app_login') }}">Login</a>
+        </h1>
+        <hr class="mt-1 mb-3">
+    </div>
     <div class="">
         <div class="col-md-12">
-            <h1>Image Keeper ({{ pagination.getTotalItemCount }})</h1>
-            <hr class="mt-1 mb-3">
             <a class="btn btn-success" href="{{ path('new_image') }}"><i class="fa fa-plus"></i> Add a new image</a>
             <div class="row">
                 {% for image in pagination if image.isActive == 1 %}

@@ -3,8 +3,10 @@
 namespace App\Service;
 
 use App\Entity\Image;
+use App\Entity\User;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
@@ -25,7 +27,13 @@ class ImageService
         $this->bag = $bag;
     }
 
-    public function SaveOrUpdateImage(Image $image)
+    /**
+     * @param Image $image
+     * @param User  $user
+     *
+     * @throws Exception
+     */
+    public function SaveOrUpdateImage(Image $image, User $user)
     {
         $file = $image->getFile();
         $imageDir = $this->bag->get('images_directory');
@@ -46,10 +54,8 @@ class ImageService
             }
         }
 
-        $date = new DateTime('now');
-
-        $image->setUserId(1);
-        $image->setLoadDate($date);
+        $image->setUserId($user);
+        $image->setLoadDate(new DateTime('now'));
 
         $em = $this->em;
         $em->persist($image);

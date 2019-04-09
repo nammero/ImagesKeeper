@@ -24,7 +24,8 @@ class Image
     private $fileName;
 
     /**
-     * @ORM\Column(name="user_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
      */
     private $userId;
 
@@ -81,7 +82,7 @@ class Image
         return $this->userId;
     }
 
-    public function setUserId(int $userId): self
+    public function setUserId($userId): self
     {
         $this->userId = $userId;
 
