@@ -3,27 +3,28 @@
 {% block body %}
     <div class="">
         <div class="col-md-12">
-            <h1>Image Keeper</h1>
+            <h1>Image Keeper ({{ pagination.getTotalItemCount }})</h1>
             <hr class="mt-1 mb-3">
             <a class="btn btn-success" href="{{ path('new_image') }}"><i class="fa fa-plus"></i> Add a new image</a>
             <div class="row">
-                {% for entity in entities if entity.isActive == 1 %}
+                {% for image in pagination if image.isActive == 1 %}
                     <div class="col-lg-3 col-md-4 col-6">
                         <a href="" class="d-block mb-4">
-                            <img class="img-fluid img-thumbnail" src="{{ asset('/uploads/small_images/'~entity.fileName) }}"/>
+                            <img class="img-fluid img-thumbnail" src="{{ asset('/uploads/small_images/'~image.fileName) }}"/>
                         </a>
                         <div>
-                            <small>{{ entity.loadDate|date('Y-m-d H:i') }}</small>
+                            <small>{{ image.loadDate|date('Y-m-d H:i') }}</small>
                         </div>
-                        <a href="{{ path('image_edit', { 'id': entity.id }) }}"
+                        <a href="{{ path('image_edit', { 'id': image.id }) }}"
                            class="btn btn-sm btn-info full-width"><i
                                     class="fa fa-edit"></i> Edit</a>
-                        <a href="{{ path('image_delete', { 'id': entity.id }) }}"
+                        <a href="{{ path('image_delete', { 'id': image.id }) }}"
                            class="btn btn-sm btn-xs btn-danger full-width verifiable"><i
                                     class="fa fa-trash"></i> Delete</a>
                     </div>
                 {% endfor %}
             </div>
+            {{ knp_pagination_render(pagination) }}
         </div>
     </div>
 {% endblock %}

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Image;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -36,15 +37,14 @@ class ImageRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Image
+    /**
+     * @return QueryBuilder
+     */
+    public function getWithSearchQueryBuilder(): QueryBuilder
     {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $qb = $this->createQueryBuilder('i')
+            ->select('i');
+
+        return $qb->orderBy('i.loadDate', 'DESC');
     }
-    */
 }

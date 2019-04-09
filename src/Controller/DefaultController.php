@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Repository\ImageRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -12,15 +15,25 @@ class DefaultController extends AbstractController
     /**
      * @Route("/", name="home")
      * @Method("GET")
+     *
+     * @param ImageRepository    $repository
+     * @param Request            $request
+     * @param PaginatorInterface $paginator
+     *
+     * @return Response
      */
-    public function index(): Response
+    public function index(ImageRepository $repository, Request $request, PaginatorInterface $paginator): Response
     {
-        $em = $this->getDoctrine()->getManager();
+        $queryBuilder = $repository->getWithSearchQueryBuilder();
 
-        $entities = $em->getRepository('App\Entity\Image')->findAll();
+        $pagination = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
 
         return $this->render('default/index.html.twig', [
-            'entities' => $entities,
+            'pagination' => $pagination,
         ]);
     }
 }
