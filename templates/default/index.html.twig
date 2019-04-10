@@ -13,7 +13,7 @@
             <div class="row">
                 {% for image in pagination if image.isActive == 1 %}
                     <div class="col-lg-3 col-md-4 col-6">
-                        <a href="" class="d-block mb-4">
+                        <a href="{{ asset('/uploads/images/'~image.fileName) }}" class="d-block mb-4">
                             <img class="img-fluid img-thumbnail" src="{{ asset('/uploads/small_images/'~image.fileName) }}"/>
                         </a>
                         <div>

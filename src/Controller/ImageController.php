@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
+ * @Route("/media")
  * Class ImageController.
  */
 class ImageController extends AbstractController
@@ -110,7 +111,7 @@ class ImageController extends AbstractController
     /**
      * Edits an existing Image entity.
      *
-     * @Route("/{id}", name="image_update")
+     * @Route("/{id}", defaults={"id" = "\d+"}, name="image_update")
      * @Method("PUT")
      *
      * @param UserRepository $repository

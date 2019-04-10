@@ -1,25 +1,29 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="col-md-12">
+    <div class="col-md-12 text-center">
         <h1>Edit the image</h1>
         <img src="{{ asset('/uploads/images/'~image.fileName) }}" class="img-rounded"/>
-        <div><small>{{ image.loadDate|date('Y-m-d H:i') }}</small></div>
-    </div>
-    {{ form_start(edit_form) }}
-    <div class="form-group col-md-12">
-        {{ form_label(edit_form.file) }}
-        {{ form_widget(edit_form.file) }}
-    </div>
-    <div class="form-group col-md-12">
-        {{ form_label(edit_form.isActive) }}
-        {{ form_widget(edit_form.isActive) }}
-    </div>
-    <div class="form-group">
-        <div class="col-md-12">
-            {{ form_widget(edit_form.submit, {attr: {class: "btn btn-primary"}}) }}
+        <div>
+            <small>{{ image.loadDate|date('Y-m-d H:i') }}</small>
         </div>
     </div>
-    {{ form_end(edit_form) }}
+    <div class="col-md-4 offset-4">
+        {{ form_start(edit_form) }}
+        <div class="form-group col-md-12">
+            {{ form_label(edit_form.file) }}
+            {{ form_widget(edit_form.file) }}
+        </div>
+        <div class="form-group col-md-12">
+            {{ form_label(edit_form.isActive) }}
+            {{ form_widget(edit_form.isActive) }}
+        </div>
+        <div class="form-group">
+            <div class="col-md-12">
+                {{ form_widget(edit_form.submit, {attr: {class: "btn btn-primary"}}) }}
+            </div>
+        </div>
+        {{ form_end(edit_form) }}
+    </div>
 {% endblock %}
 

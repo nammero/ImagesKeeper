@@ -25,7 +25,7 @@ class ImageType extends AbstractType
             ],
             'attr' => [
                 'class' => 'form-control',
-                'accept' => 'image/jpeg,image/png',
+                'accept' => 'image/jpeg,image/jpg,image/png,image/gif',
             ],
         ])->add(
             'isActive', CheckboxType::class, [

@@ -10,6 +10,10 @@
         {% endblock %}
     </head>
     <body class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-bg mb-5">
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        </div>
+    </nav>
         {% block body %}{% endblock %}
         {% block javascripts %}
             <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
