@@ -70,4 +70,19 @@ class ImageService
     {
         return md5(uniqid());
     }
+
+    /**
+     * @param $dir
+     *
+     * @return false|int
+     */
+    public static function folderSize($dir)
+    {
+        $size = 0;
+        foreach (glob(rtrim($dir, '/').'/*', GLOB_NOSORT) as $each) {
+            $size += is_file($each) ? filesize($each) : self::folderSize($each);
+        }
+
+        return $size;
+    }
 }

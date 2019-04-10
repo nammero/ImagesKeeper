@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\ImageRepository;
+use App\Service\ImageService;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,6 +26,7 @@ class DefaultController extends AbstractController
     public function index(ImageRepository $repository, Request $request, PaginatorInterface $paginator): Response
     {
         $queryBuilder = $repository->getWithSearchQueryBuilder();
+        $uploadsSize = ImageService::folderSize('uploads');
 
         $pagination = $paginator->paginate(
             $queryBuilder,
@@ -34,6 +36,7 @@ class DefaultController extends AbstractController
 
         return $this->render('default/index.html.twig', [
             'pagination' => $pagination,
+            'uploadsSize' => $uploadsSize,
         ]);
     }
 }

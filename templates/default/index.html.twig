@@ -2,29 +2,32 @@
 
 {% block body %}
     <div class="col-md-12">
-        <h1>Image Keeper ({{ pagination.getTotalItemCount }})
-            <a class="btn btn-dark float-right mt-2" href="{{ path('app_login') }}">Login</a>
-        </h1>
-        <hr class="mt-1 mb-3">
+        <small>Total images: {{ pagination.getTotalItemCount }} |</small>
+        <small>Total size: {{ (uploadsSize / 1024)|number_format(2, '.', ',') }} KB</small>
     </div>
     <div class="">
         <div class="col-md-12">
-            <a class="btn btn-success" href="{{ path('new_image') }}"><i class="fa fa-plus"></i> Add a new image</a>
+            {% if app.user %}
+                <a class="btn btn-success" href="{{ path('new_image') }}"><i class="fa fa-plus"></i> Add a new image</a>
+            {% endif %}
             <div class="row">
                 {% for image in pagination if image.isActive == 1 %}
                     <div class="col-lg-3 col-md-4 col-6">
-                        <a href="{{ asset('/uploads/images/'~image.fileName) }}" class="d-block mb-4">
-                            <img class="img-fluid img-thumbnail" src="{{ asset('/uploads/small_images/'~image.fileName) }}"/>
+                        <a href="{{ asset('/uploads/images/'~image.fileName) }}" class="d-block mb-1">
+                            <img class="img-fluid img-thumbnail"
+                                 src="{{ asset('/uploads/small_images/'~image.fileName) }}"/>
                         </a>
-                        <div>
+                        <div class="mb-2">
                             <small>{{ image.loadDate|date('Y-m-d H:i') }}</small>
                         </div>
-                        <a href="{{ path('image_edit', { 'id': image.id }) }}"
-                           class="btn btn-sm btn-info full-width"><i
-                                    class="fa fa-edit"></i> Edit</a>
-                        <a href="{{ path('image_delete', { 'id': image.id }) }}"
-                           class="btn btn-sm btn-xs btn-danger full-width verifiable"><i
-                                    class="fa fa-trash"></i> Delete</a>
+                        {% if app.user %}
+                            <a href="{{ path('image_edit', { 'id': image.id }) }}"
+                               class="btn btn-sm btn-info full-width"><i
+                                        class="fa fa-edit"></i> Edit</a>
+                            <a href="{{ path('image_delete', { 'id': image.id }) }}"
+                               class="btn btn-sm btn-xs btn-danger full-width verifiable"><i
+                                        class="fa fa-trash"></i> Delete</a>
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>

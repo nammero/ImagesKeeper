@@ -7,9 +7,17 @@ use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Exception;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class FakeUser extends Fixture
 {
+    private $passwordEncoder;
+
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $this->passwordEncoder = $passwordEncoder;
+    }
+
     /**
      * @param ObjectManager $manager
      *
@@ -21,8 +29,8 @@ class FakeUser extends Fixture
         $user->setEmail('admin@admin.com');
         $user->setIsActive(1);
         $user->setRegistrationDate(new DateTime());
-        $user->setPassword('qwer');
-        $user->setRoles(['admin']);
+        $user->setPassword($this->passwordEncoder->encodePassword($user, 'qwerty'));
+        $user->setRoles(['ROLE_ADMIN']);
         $manager->persist($user);
 
         $manager->flush();
